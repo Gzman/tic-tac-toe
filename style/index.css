@@ -1,0 +1,58 @@
+
+:root {
+    --gameboard-width: 35rem;
+}
+
+html {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+h1 {
+    padding: 1rem;
+    font-size: 3rem;
+}
+
+.current-turn {
+    font-size: 1.5rem;
+}
+
+.gameboard {
+    justify-self: center;
+    width: var(--gameboard-width);
+    height: var(--gameboard-width);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0.5rem;
+    background-color: black;
+}
+
+.gameboard-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(166, 166, 166);
+    color: white;
+}
+
+.gameboard-cell:hover {
+    background-color: rgba(166, 166, 166, 0.9);
+}
+
+.gameboard-cell:active {
+    color: lightgreen;
+}
+
+.gameboard-cell p {
+    font-size: 4rem;
+}
