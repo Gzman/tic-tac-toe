@@ -1,58 +1,87 @@
-
 :root {
-    --gameboard-width: 35rem;
+  --gameboard-width: 35rem;
 }
 
 html {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 h1 {
-    padding: 1rem;
-    font-size: 3rem;
+  padding: 1rem;
+  font-size: 3rem;
 }
 
 .current-turn {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 .gameboard {
-    justify-self: center;
-    width: var(--gameboard-width);
-    height: var(--gameboard-width);
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 0.5rem;
-    background-color: black;
+  justify-self: center;
+  width: var(--gameboard-width);
+  height: var(--gameboard-width);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  background-color: black;
 }
 
 .gameboard-cell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(166, 166, 166);
-    color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(166, 166, 166);
+  color: white;
 }
 
 .gameboard-cell:hover {
-    background-color: rgba(166, 166, 166, 0.9);
+  background-color: rgba(166, 166, 166, 0.9);
 }
 
 .gameboard-cell:active {
-    color: lightgreen;
+  color: darkred;
 }
 
 .gameboard-cell p {
-    font-size: 4rem;
+  font-size: 4rem;
+}
+
+.pop-up-layer {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.pop-up-content {
+    background-color: rgba(222, 222, 222, 0.8);
+    margin: 30% auto;
+    padding: 1rem;
+}
+
+.outcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.outcome-message {
+    font-size: 3rem;
+    text-align: center;
 }
