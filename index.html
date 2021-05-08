@@ -23,15 +23,22 @@
       <div class="gameboard-cell" data-index="7"><p></p></div>
       <div class="gameboard-cell" data-index="8"><p></p></div>
     </div>
-    <div class="pop-up-layer">
-      <div class="pop-up-content">
-        <!-- <div class="select-opponent" hidden>
-          <div class="select-player2">Human</div>
-          <div class="select-cpu">Computer</div>
-        </div> -->
+    <button class="restart-btn">Restart</button>
+    <div class="select-opponent-layer">
+      <div class="select-opponent-content">
+        <p>Select:</p>
+        <div class="player-vs-player" data-is-cpu="false">
+          <p>Player vs Player</p>
+        </div>
+        <div class="player-vs-computer" data-is-cpu="true">
+          <p>Player vs Computer</p>
+        </div>
+      </div>
+    </div>
+    <div class="outcome-layer">
+      <div class="outcome-content">
         <div class="outcome">
           <p class="outcome-message"></p>
-          <button class="outcome-restart-btn">Restart</button>
         </div>
       </div>
     </div>
