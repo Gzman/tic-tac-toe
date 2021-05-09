@@ -14,11 +14,12 @@ const player2 = Player("Player 2", "O");
 const GameBoard = (() => {
     const EMPTY = "";
     let cells = new Array(9).fill(EMPTY);
-    const isCellMarked = (index, marker) => cells[index] === marker;
+    const isMarkerSet = (index, marker) => cells[index] === marker;
+    const isCellMarked = (index) => !isMarkerSet(index, EMPTY);
     const reset = () => cells = cells.map(cell => cell = EMPTY);
     const getMark = index => cells[index];
     const markCell = (index, marker) => {
-        if (isCellMarked(index, EMPTY)) {
+        if (isMarkerSet(index, EMPTY)) {
             cells[index] = marker;
         }
     }
@@ -28,18 +29,18 @@ const GameBoard = (() => {
         return markedIndicies;
     }, []);
     const getAllUnmarkedIndicies = () => getAllMarkedIndicies(EMPTY);
-    const satisfyWinCondition = marker => (isCellMarked(0, marker) && (cells[0] === cells[1] && cells[0] === cells[2])) ||
-        (isCellMarked(3, marker) && (cells[3] === cells[4] && cells[3] === cells[5])) ||
-        (isCellMarked(6, marker) && (cells[6] === cells[7] && cells[6] === cells[8])) ||
-        (isCellMarked(0, marker) && (cells[0] === cells[3] && cells[0] === cells[6])) ||
-        (isCellMarked(1, marker) && (cells[1] === cells[4] && cells[1] === cells[7])) ||
-        (isCellMarked(2, marker) && (cells[2] === cells[5] && cells[2] === cells[8])) ||
-        (isCellMarked(0, marker) && (cells[0] === cells[4] && cells[0] === cells[8])) ||
-        (isCellMarked(2, marker) && (cells[2] === cells[4] && cells[2] === cells[6]));
+    const winCombinations = [
+        [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]
+    ];
+    const satisfyWinCondition = marker => {
+        const markedIndicies = getAllMarkedIndicies(marker);
+        return winCombinations.some((combination) => combination.every(index => markedIndicies.includes(index)));
+    }
     return {
         reset,
         getMark,
         markCell,
+        isCellMarked,
         areAllCellsMarked,
         satisfyWinCondition,
         getAllMarkedIndicies,
@@ -52,9 +53,7 @@ const DisplayCtrl = (() => {
     const selectOpponentModal = document.querySelector(".select-opponent-layer");
     const outcomeModal = document.querySelector(".outcome-layer");
     const play = (event) => {
-        const cellElement = event.currentTarget;
-        if(cellElement.children[0].textContent !== "") return;
-        const selectedIdx = parseInt(cellElement.dataset.index);
+        const selectedIdx = parseInt(event.currentTarget.dataset.index);
         GameCtrl.play(selectedIdx);
     }
     const restart = () => {
@@ -82,24 +81,30 @@ const DisplayCtrl = (() => {
         outcomeModal.querySelector(".outcome-message").textContent = outcomeMsg;
     }
     const renderTurn = message => document.querySelector(".current-turn").textContent = message;
-    return { renderGameboard, renderOutcome, renderTurn, renderOpponentSelection };
+    return {
+        renderGameboard,
+        renderOutcome,
+        renderTurn,
+        renderOpponentSelection
+    };
 })();
 
 const GameCtrl = ((player1, player2) => {
     let currentPlayer = player1;
     const play = (index) => {
+        if (GameBoard.isCellMarked(index)) return;
         GameBoard.markCell(index, currentPlayer.getMarker());
         DisplayCtrl.renderGameboard();
-        if (hasPlayerWon()) {
+        if (hasCurrentPlayerWon()) {
             DisplayCtrl.renderOutcome(`${currentPlayer.getName()} wins!`);
+            return;
         }
-        else if (isDraw()) {
+        if (isDraw()) {
             DisplayCtrl.renderOutcome(`Draw!`);
+            return;
         }
-        else {
-            changePlayer();
-            displayCurrentTurn();
-        }
+        nextTurn();
+        displayCurrentTurn();
     }
     const computerPlay = () => {
         const unmarkedIndicies = GameBoard.getAllUnmarkedIndicies();
@@ -107,7 +112,7 @@ const GameCtrl = ((player1, player2) => {
         const randomIndex = unmarkedIndicies[Math.floor(Math.random() * unmarkedIndicies.length)];
         play(randomIndex);
     }
-    const changePlayer = () => {
+    const nextTurn = () => {
         if (currentPlayer === player1) {
             currentPlayer = player2;
             if (player2.isCpu() === true) {
@@ -128,8 +133,8 @@ const GameCtrl = ((player1, player2) => {
         DisplayCtrl.renderGameboard();
     }
     const displayCurrentTurn = () => DisplayCtrl.renderTurn(`${currentPlayer.getName()}'s turn`);
-    const hasPlayerWon = () => GameBoard.satisfyWinCondition(currentPlayer.getMarker());
-    const isDraw = () => GameBoard.areAllCellsMarked() && !hasPlayerWon(player1) && !hasPlayerWon(player2);
+    const hasCurrentPlayerWon = () => GameBoard.satisfyWinCondition(currentPlayer.getMarker());
+    const isDraw = () => GameBoard.areAllCellsMarked() && !hasCurrentPlayerWon(player1) && !hasCurrentPlayerWon(player2);
     return { start, play, reset }
 })(player1, player2);
 
