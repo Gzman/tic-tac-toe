@@ -146,11 +146,18 @@ h1 {
   align-items: center;
 }
 
+.outcome-hint {
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #4d91a9;
+}
+
 .outcome-message {
   padding: 1rem;
   font-size: 2rem;
   text-align: center;
 }
+
 
 @media (max-height: 768px) {
   body {
