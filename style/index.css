@@ -14,15 +14,18 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+  background-color: white;
 }
 
 h1 {
   padding: 1rem;
   font-size: 3rem;
+  color: #344a53;
 }
 
 .current-turn {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
+  color: #344a53;
 }
 
 .gameboard {
@@ -33,49 +36,61 @@ h1 {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   gap: 0.5rem;
-  background-color: black;
 }
 
 .gameboard-cell {
+  min-height: max-content;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(166, 166, 166);
-  color: white;
+  background-color: #4d91a9;
 }
 
 .gameboard-cell:hover {
-  background-color: rgba(166, 166, 166, 0.9);
+  background-color: #5187ae;
   cursor: pointer;
-}
-
-.gameboard-cell:active {
-  color: darkred;
 }
 
 @keyframes pop-mark {
   0% {
-    font-size: 10rem;
-  } 
-  100% {
-    font-size: 5.5rem;
+    transform: scale(0.98);
   }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.gameboard-cell:active {
+  color: rgb(99, 0, 0);
+  animation: pop-mark 0.1s ease-out;
 }
 
 .gameboard-cell p {
   font-size: 5.5rem;
-  animation: pop-mark 0.3s ease-out;
+  animation: colorize 0.4s ease-out;
+  color: white;
 }
 
 .restart-btn {
+  padding: 0.5rem;
   font-size: 1.5rem;
+  color: #344a53;
+  background-color: #e6f4f1;
+  border: 0.15rem solid #344a53;
+  border-radius: 0.3rem;
 }
 
 .restart-btn:hover {
   cursor: pointer;
-} 
+}
 
-.select-opponent-layer, .outcome-layer {
+.restart-btn:active {
+  color: white;
+  background-color: #4d91a9;
+}
+
+.select-opponent-layer,
+.outcome-layer {
   display: none;
   position: fixed;
   z-index: 3;
@@ -84,11 +99,12 @@ h1 {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
-.select-opponent-content, .outcome-content {
-  padding: 1.5rem;
+.select-opponent-content,
+.outcome-content {
+  padding: 1.75rem;
   max-width: 20rem;
   margin: 25vh auto;
   display: flex;
@@ -96,6 +112,8 @@ h1 {
   align-items: center;
   gap: 1.5rem;
   background-color: white;
+  color: #344a53;
+  box-shadow: 0 0 0.66rem #344a53;
 }
 
 .select-opponent-content div {
@@ -103,18 +121,18 @@ h1 {
   padding: 1rem;
   display: flex;
   justify-content: center;
-  border: 0.1rem solid grey;
+  border: 0.1rem solid #344a53;
   border-radius: 2rem;
 }
 
 .select-opponent-content div:hover {
-  background-color: lavender;
+  background-color: #e6f4f1;
   cursor: pointer;
 }
 
 .select-opponent-content div:active {
   color: white;
-  background-color: grey;
+  background-color: #4d91a9;
 }
 
 .select-opponent-content p {
@@ -122,13 +140,73 @@ h1 {
 }
 
 .outcome {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .outcome-message {
-    padding: 1rem;
-    font-size: 2rem;
-    text-align: center;
+  padding: 1rem;
+  font-size: 2rem;
+  text-align: center;
+}
+
+@media (max-height: 768px) {
+  body {
+    gap: 0.5rem
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+  .current-turn {
+    font-size: 1rem;
+  }
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-height: 430px) {
+  body {
+    gap: 0.25rem
+  }
+  h1 {
+    font-size: 1rem;
+  }
+  .current-turn {
+    font-size: 1rem;
+  }
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 620px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 550px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 500px) {
+  html {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 375px) {
+  html {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 360px) {
+  html {
+    font-size: 8px;
+  }
 }
