@@ -17,13 +17,8 @@ body {
   background-color: white;
 }
 
-h1 {
-  padding: 1rem;
-  font-size: 3rem;
-  color: #344a53;
-}
-
 .current-turn {
+  margin-top: 2rem;
   font-size: 1.75rem;
   color: #344a53;
 }
@@ -106,7 +101,7 @@ h1 {
 .outcome-content {
   padding: 1.75rem;
   max-width: 20rem;
-  margin: 25vh auto;
+  margin: 15vh auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,6 +109,12 @@ h1 {
   background-color: white;
   color: #344a53;
   box-shadow: 0 0 0.66rem #344a53;
+}
+
+h1 {
+  padding: 1rem;
+  font-size: 3.2rem;
+  color: #4d91a9;
 }
 
 .select-opponent-content div {
@@ -153,10 +154,7 @@ h1 {
 
 @media (max-height: 768px) {
   body {
-    gap: 0.5rem
-  }
-  h1 {
-    font-size: 1.5rem;
+    gap: 0.75rem
   }
   .current-turn {
     font-size: 1rem;
@@ -168,10 +166,7 @@ h1 {
 
 @media (max-height: 430px) {
   body {
-    gap: 0.25rem
-  }
-  h1 {
-    font-size: 1rem;
+    gap: 0.5rem
   }
   .current-turn {
     font-size: 1rem;

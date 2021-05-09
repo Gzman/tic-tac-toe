@@ -56,7 +56,7 @@ const GameBoard = (() => {
         const hasTwoInRow = bestMoves.length === 1;
         const playerHasTwoInRow = playersBestMove.length === 1;
         if (playerHasTwoInRow && hasTwoInRow) {
-            return Math.random() < 0.5 ? playersBestMove : playersBestMove;
+            return Math.random() < 0.5 ? playersBestMove : bestMoves;
         }
         if (playerHasTwoInRow) {
             return playersBestMove;
