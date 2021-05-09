@@ -30,11 +30,42 @@ const GameBoard = (() => {
     }, []);
     const getAllUnmarkedIndicies = () => getAllMarkedIndicies(EMPTY);
     const winCombinations = [
-        [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
     ];
     const satisfyWinCondition = marker => {
         const markedIndicies = getAllMarkedIndicies(marker);
         return winCombinations.some((combination) => combination.every(index => markedIndicies.includes(index)));
+    }
+    const getBestMoves = (marker, opponentMark) => {
+        const markedIndicies = getAllMarkedIndicies(marker);
+        const opponentIndicies = getAllMarkedIndicies(opponentMark);
+        let possible = winCombinations.filter((combination) =>
+            combination.some(index => markedIndicies.includes(index) &&
+                combination.every(index => !opponentIndicies.includes(index))));
+        if (possible.length > 0) {
+            possible.sort((first, second) =>
+                second.filter(x => getMark(x) === marker).length - first.filter(x => getMark(x) === marker).length);
+            const best = possible[0];
+            return best.filter(index => getMark(index) === EMPTY);
+        }
+        return [];
+    }
+    const getLogicalMoves = (marker, opponentMark) => {
+        const bestMoves = getBestMoves(marker, opponentMark);
+        const playersBestMove = getBestMoves(opponentMark, marker);
+        const hasTwoInRow = bestMoves.length === 1;
+        const playerHasTwoInRow = playersBestMove.length === 1;
+        if (playerHasTwoInRow && hasTwoInRow) {
+            return Math.random() < 0.5 ? playersBestMove : playersBestMove;
+        }
+        if (playerHasTwoInRow) {
+            return playersBestMove;
+        }
+        return bestMoves;
+    }
+    const getRandomMove = () => {
+        const unmarkedIndicies = GameBoard.getAllUnmarkedIndicies();
+        return unmarkedIndicies[Math.floor(Math.random() * unmarkedIndicies.length)];
     }
     return {
         reset,
@@ -44,7 +75,9 @@ const GameBoard = (() => {
         areAllCellsMarked,
         satisfyWinCondition,
         getAllMarkedIndicies,
-        getAllUnmarkedIndicies
+        getAllUnmarkedIndicies,
+        getLogicalMoves,
+        getRandomMove
     };
 })();
 
@@ -107,16 +140,21 @@ const GameCtrl = ((player1, player2) => {
         displayCurrentTurn();
     }
     const computerPlay = () => {
-        const unmarkedIndicies = GameBoard.getAllUnmarkedIndicies();
-        if (unmarkedIndicies.length === 0) return;
-        const randomIndex = unmarkedIndicies[Math.floor(Math.random() * unmarkedIndicies.length)];
-        play(randomIndex);
+        if (GameBoard.areAllCellsMarked()) return;
+        const moves = GameBoard.getLogicalMoves(currentPlayer.getMarker(), player1.getMarker());
+        if (moves.length === 0) {
+            const randomIndex = GameBoard.getRandomMove();
+            play(randomIndex);
+            return;
+        }
+        const index = moves[Math.floor(Math.random() * moves.length)];
+        play(index);
     }
     const nextTurn = () => {
         if (currentPlayer === player1) {
             currentPlayer = player2;
             if (player2.isCpu() === true) {
-                setTimeout(computerPlay, 380);
+                setTimeout(computerPlay, 320);
             }
         } else {
             currentPlayer = player1;
